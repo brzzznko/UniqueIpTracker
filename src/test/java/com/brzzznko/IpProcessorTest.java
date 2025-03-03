@@ -1,6 +1,8 @@
 package com.brzzznko;
 
-import com.brzzznko.processors.BitArrayProcessor;
+import com.brzzznko.processors.SimpleProcessor;
+import com.brzzznko.processors.ParallelProcessor;
+import com.brzzznko.trackers.AtomicBitArrayIpTracker;
 import com.brzzznko.trackers.BitArrayIpTracker;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -18,7 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class IpProcessorTest {
     private static Stream<IpProcessor> provideIpProcessors() {
         return Stream.of(
-                new BitArrayProcessor(new BitArrayIpTracker())
+                new SimpleProcessor(new BitArrayIpTracker()),
+                new ParallelProcessor(new AtomicBitArrayIpTracker())
         );
     }
 

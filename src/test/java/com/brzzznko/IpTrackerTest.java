@@ -1,5 +1,6 @@
 package com.brzzznko;
 
+import com.brzzznko.trackers.AtomicBitArrayIpTracker;
 import com.brzzznko.trackers.BitArrayIpTracker;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -12,7 +13,8 @@ class IpTrackerTest {
 
     private static Stream<IpTracker> provideIpTrackers() {
         return Stream.of(
-                new BitArrayIpTracker()
+                new BitArrayIpTracker(),
+                new AtomicBitArrayIpTracker()
         );
     }
 

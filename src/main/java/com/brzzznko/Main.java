@@ -1,7 +1,7 @@
 package com.brzzznko;
 
-import com.brzzznko.processors.BitArrayProcessor;
-import com.brzzznko.trackers.BitArrayIpTracker;
+import com.brzzznko.processors.ParallelProcessor;
+import com.brzzznko.trackers.AtomicBitArrayIpTracker;
 import com.brzzznko.utils.LoadingIndicator;
 import com.brzzznko.utils.ProfilerUtils;
 
@@ -27,7 +27,7 @@ public class Main {
         long startTime = System.nanoTime();
         long startMemory = getUsedMemory();
 
-        IpProcessor processor = new BitArrayProcessor(new BitArrayIpTracker());
+        IpProcessor processor = new ParallelProcessor(new AtomicBitArrayIpTracker());
 
         try {
             processor.process(filePath);
