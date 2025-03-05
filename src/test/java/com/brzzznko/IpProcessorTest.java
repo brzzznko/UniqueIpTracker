@@ -1,7 +1,7 @@
 package com.brzzznko;
 
 import com.brzzznko.processors.ConcurrentChunkProcessor;
-import com.brzzznko.processors.SimpleProcessor;
+import com.brzzznko.processors.SingleThreadedProcessor;
 import com.brzzznko.processors.ParallelProcessor;
 import com.brzzznko.trackers.AtomicBitArrayIpTracker;
 import com.brzzznko.trackers.BitArrayIpTracker;
@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class IpProcessorTest {
     private static Stream<IpProcessor> provideIpProcessors() {
         return Stream.of(
-                new SimpleProcessor(new BitArrayIpTracker()),
+                new SingleThreadedProcessor(new BitArrayIpTracker()),
                 new ParallelProcessor(new AtomicBitArrayIpTracker()),
                 new ConcurrentChunkProcessor(new AtomicBitArrayIpTracker())
         );

@@ -8,11 +8,11 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
-public class SimpleProcessor implements IpProcessor {
+public class SingleThreadedProcessor implements IpProcessor {
 
     private final IpTracker tracker;
 
-    public SimpleProcessor(IpTracker tracker) {
+    public SingleThreadedProcessor(IpTracker tracker) {
         this.tracker = tracker;
     }
 
