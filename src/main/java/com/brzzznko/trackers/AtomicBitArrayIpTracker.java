@@ -13,7 +13,12 @@ public class AtomicBitArrayIpTracker implements IpTracker {
     private final AtomicInteger counter = new AtomicInteger(0);
 
     public void track(String ip) {
-        var number = IpUtils.ipToInt(ip);
+        long number;
+        try {
+            number = IpUtils.ipToInt(ip);
+        } catch (RuntimeException e) {
+            return;
+        }
 
         int index = (int) (number / 64);
         long position = 1L << (number % 64);

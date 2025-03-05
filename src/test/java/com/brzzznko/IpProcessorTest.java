@@ -1,5 +1,6 @@
 package com.brzzznko;
 
+import com.brzzznko.processors.ConcurrentChunkProcessor;
 import com.brzzznko.processors.SimpleProcessor;
 import com.brzzznko.processors.ParallelProcessor;
 import com.brzzznko.trackers.AtomicBitArrayIpTracker;
@@ -21,7 +22,8 @@ class IpProcessorTest {
     private static Stream<IpProcessor> provideIpProcessors() {
         return Stream.of(
                 new SimpleProcessor(new BitArrayIpTracker()),
-                new ParallelProcessor(new AtomicBitArrayIpTracker())
+                new ParallelProcessor(new AtomicBitArrayIpTracker()),
+                new ConcurrentChunkProcessor(new AtomicBitArrayIpTracker())
         );
     }
 

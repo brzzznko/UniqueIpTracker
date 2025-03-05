@@ -3,6 +3,7 @@ package com.brzzznko.utils;
 public final class IpUtils {
 
     private IpUtils() {}
+
     public static long ipToInt(String ip) {
         String[] parts = ip.split("\\.");
         return (Long.parseLong(parts[0]) << 24) |

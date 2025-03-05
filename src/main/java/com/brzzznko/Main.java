@@ -1,6 +1,6 @@
 package com.brzzznko;
 
-import com.brzzznko.processors.ParallelProcessor;
+import com.brzzznko.processors.ConcurrentChunkProcessor;
 import com.brzzznko.trackers.AtomicBitArrayIpTracker;
 import com.brzzznko.utils.LoadingIndicator;
 import com.brzzznko.utils.ProfilerUtils;
@@ -27,13 +27,12 @@ public class Main {
         long startTime = System.nanoTime();
         long startMemory = getUsedMemory();
 
-        IpProcessor processor = new ParallelProcessor(new AtomicBitArrayIpTracker());
+        IpProcessor processor = new ConcurrentChunkProcessor(new AtomicBitArrayIpTracker());
 
         try {
             processor.process(filePath);
         } catch (Exception e) {
             System.err.println("Error during processing: " + e.getMessage());
-            e.printStackTrace();
         } finally {
             indicator.stop();
 
