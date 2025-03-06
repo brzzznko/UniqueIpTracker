@@ -10,8 +10,9 @@ import java.util.stream.IntStream;
 
 public class FileSplitter {
 
-    private static final long CHUNK_SIZE = 10L * 1024 * 1024 * 1024; // 10GB chunks
-    private static final int BUFFER_SIZE = 1024 * 1024; // 1MB buffer
+    private static final long CHUNK_SIZE = 5L * 1024 * 1024 * 1024; // 5GB chunks
+    private static final int BUFFER_SIZE = 10 * 1024 * 1024; // 10MB buffer
+    private static final int TIMEOUT_SECONDS = 300;
 
     public static List<Path> splitFile(String filename) throws IOException, InterruptedException {
         Path inputPath = Paths.get(filename);
@@ -26,7 +27,7 @@ public class FileSplitter {
                 .toList();
 
         executor.shutdown();
-        executor.awaitTermination(Long.MAX_VALUE, TimeUnit.MILLISECONDS);
+        executor.awaitTermination(TIMEOUT_SECONDS, TimeUnit.MILLISECONDS);
 
         return futures.stream().map(f -> {
             try {
@@ -57,7 +58,7 @@ public class FileSplitter {
 
             // Start reading from the adjusted start position
             file.seek(startByte);
-            byte[] buffer = new byte[BUFFER_SIZE]; // Read 1MB at a time
+            byte[] buffer = new byte[BUFFER_SIZE];
             int bytesRead;
             long bytesWritten = 0;
 

@@ -14,6 +14,7 @@ import java.util.stream.Stream;
 public class ConcurrentChunkProcessor implements IpProcessor {
 
     private final IpTracker tracker;
+    private static final int TIMEOUT_SECONDS = 300;
 
     public ConcurrentChunkProcessor(IpTracker tracker) {
         this.tracker = tracker;
@@ -43,7 +44,7 @@ public class ConcurrentChunkProcessor implements IpProcessor {
                 .toList();
 
         executor.shutdown();
-        executor.awaitTermination(Long.MAX_VALUE, TimeUnit.MILLISECONDS);
+        executor.awaitTermination(TIMEOUT_SECONDS, TimeUnit.MILLISECONDS);
 
         for (Future<Void> future : futures) {
             try {
