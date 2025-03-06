@@ -35,7 +35,7 @@ The Unique IP Tracker efficiently processes large files using bit operations and
 
 ### **Clone the Repository**
 ```sh
-git clone https://github.com/YOUR_GITHUB_USERNAME/unique-ip-tracker.git
+git clone https://github.com/brzzznko/unique-ip-tracker.git
 cd unique-ip-tracker
 ```
 

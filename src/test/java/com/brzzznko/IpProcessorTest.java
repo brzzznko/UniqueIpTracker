@@ -1,36 +1,26 @@
 package com.brzzznko;
 
-import com.brzzznko.processors.ConcurrentChunkProcessor;
-import com.brzzznko.processors.SingleThreadedProcessor;
-import com.brzzznko.processors.ParallelProcessor;
-import com.brzzznko.trackers.AtomicBitArrayIpTracker;
-import com.brzzznko.trackers.BitArrayIpTracker;
+import com.brzzznko.processors.ProcessorFactory;
+import com.brzzznko.processors.ProcessorFactory.ProcessorType;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.EnumSource;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class IpProcessorTest {
-    private static Stream<IpProcessor> provideIpProcessors() {
-        return Stream.of(
-                new SingleThreadedProcessor(new BitArrayIpTracker()),
-                new ParallelProcessor(new AtomicBitArrayIpTracker()),
-                new ConcurrentChunkProcessor(new AtomicBitArrayIpTracker())
-        );
-    }
 
     @ParameterizedTest
-    @MethodSource("provideIpProcessors")
-    void shouldProcessLargeFileCorrectly(IpProcessor processor) {
+    @EnumSource(ProcessorType.class)
+    void shouldProcessLargeFileCorrectly(ProcessorType type) {
         Path filePath = Paths.get("src/test/resources/test.txt");
+        IpProcessor processor = ProcessorFactory.createProcessor(type);
 
         processor.process(filePath.toString());
 
@@ -38,10 +28,11 @@ class IpProcessorTest {
     }
 
     @ParameterizedTest
-    @MethodSource("provideIpProcessors")
-    void shouldHandleEmptyFile(IpProcessor processor, @TempDir Path tempDir) throws IOException {
+    @EnumSource(ProcessorType.class)
+    void shouldHandleEmptyFile(ProcessorType type, @TempDir Path tempDir) throws IOException {
         Path tempFile = tempDir.resolve("empty.txt");
         Files.createFile(tempFile);
+        IpProcessor processor = ProcessorFactory.createProcessor(type);
 
         processor.process(tempFile.toString());
 
@@ -49,9 +40,10 @@ class IpProcessorTest {
     }
 
     @ParameterizedTest
-    @MethodSource("provideIpProcessors")
-    void shouldThrowRuntimeExceptionOnFileError(IpProcessor processor) {
+    @EnumSource(ProcessorType.class)
+    void shouldThrowRuntimeExceptionOnFileError(ProcessorType type) {
         String invalidFilePath = "non_existent_file.txt";
+        IpProcessor processor = ProcessorFactory.createProcessor(type);
 
         assertThrows(RuntimeException.class, () -> processor.process(invalidFilePath));
     }
