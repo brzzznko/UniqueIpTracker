@@ -24,10 +24,7 @@ public class ConcurrentChunkProcessor implements IpProcessor {
         try {
             List<Path> chunkFiles = FileSplitter.splitFile(filename);
             processChunks(chunkFiles);
-
-            for (Path chunkFile : chunkFiles) {
-                Files.delete(chunkFile);
-            }
+            deleteChunkFiles(chunkFiles);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -59,12 +56,22 @@ public class ConcurrentChunkProcessor implements IpProcessor {
 
     private Void processChunk(Path chunkFile) {
         try (Stream<String> lines = Files.lines(chunkFile)) {
-            lines.forEach(line -> tracker.track(line.split(" ")[0].trim()));
+            lines.forEach(line -> tracker.track(extractIp(line)));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error processing chunk: " + chunkFile, e);
         }
 
         return null;
+    }
+
+    private void deleteChunkFiles(List<Path> chunkFiles) {
+        chunkFiles.forEach(path -> {
+            try {
+                Files.deleteIfExists(path);
+            } catch (IOException e) {
+                System.err.println("Warning: Could not delete temporary chunk file: " + path);
+            }
+        });
     }
 
 

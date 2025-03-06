@@ -6,4 +6,8 @@ public interface IpProcessor {
 
     int getCounter();
 
+    default String extractIp(String line) {
+        return line.split(" ")[0].trim();
+    }
+
 }

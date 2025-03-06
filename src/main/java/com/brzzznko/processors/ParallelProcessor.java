@@ -19,9 +19,9 @@ public class ParallelProcessor implements IpProcessor {
     @Override
     public void process(String filename) {
         try (Stream<String> lines = Files.lines(Paths.get(filename)).parallel()) {
-            lines.forEach(line -> tracker.track(line.split(" ")[0].trim()));
+            lines.forEach(line -> tracker.track(extractIp(line)));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error processing file: " + filename, e);
         }
     }
 

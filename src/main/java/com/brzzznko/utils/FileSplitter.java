@@ -11,6 +11,7 @@ import java.util.stream.IntStream;
 public class FileSplitter {
 
     private static final long CHUNK_SIZE = 10L * 1024 * 1024 * 1024; // 10GB chunks
+    private static final int BUFFER_SIZE = 1024 * 1024; // 1MB buffer
 
     public static List<Path> splitFile(String filename) throws IOException, InterruptedException {
         Path inputPath = Paths.get(filename);
@@ -56,7 +57,7 @@ public class FileSplitter {
 
             // Start reading from the adjusted start position
             file.seek(startByte);
-            byte[] buffer = new byte[1024 * 1024]; // Read 1MB at a time
+            byte[] buffer = new byte[BUFFER_SIZE]; // Read 1MB at a time
             int bytesRead;
             long bytesWritten = 0;
 
